@@ -15,6 +15,14 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
+
+export const pillarImages = [
+  "https://images.unsplash.com/photo-1574169208507-84376144848b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1479&q=80",
+  "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",
+  "https://images.unsplash.com/photo-1604076913837-52ab5629fba9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",
+  "https://images.unsplash.com/photo-1557672172-298e090bd0f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",
+];
+
 const Home: NextPage = () => {
   return (
     <>
@@ -44,13 +52,6 @@ const Home: NextPage = () => {
 };
 
 const ImagesSection = () => {
-  const images = [
-    "https://images.unsplash.com/photo-1574169208507-84376144848b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1479&q=80",
-    "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",
-    "https://images.unsplash.com/photo-1604076913837-52ab5629fba9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",
-    "https://images.unsplash.com/photo-1557672172-298e090bd0f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",
-  ];
-
   const [cols, setCols] = useState(4);
 
   return (
@@ -88,10 +89,10 @@ const ImagesSection = () => {
         className="group grid h-[80vh] gap-4 overflow-hidden"
         style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
       >
-        {images
+        {pillarImages
           .filter((_, i) => i < cols)
           .map((image, i) => (
-            <Link href="#" passHref key={image}>
+            <Link href={`${i + 1}`} passHref key={image}>
               <a
                 className={`filter transition-all duration-300 hover:!opacity-100 hover:!grayscale-0 focus:!opacity-100 focus:!grayscale-0 group-focus-within:opacity-40 group-focus-within:grayscale group-hover:opacity-40 group-hover:grayscale ${
                   i !== 0 && "opacity-40 grayscale"
