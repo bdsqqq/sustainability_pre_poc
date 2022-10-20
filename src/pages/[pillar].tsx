@@ -10,15 +10,15 @@ const Pillar = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <main>
-      <div className="flex">
-        <figure className="aspect-square max-h-screen min-h-screen">
+      <div className="flex min-h-screen">
+        <figure className="aspect-square md:min-h-screen">
           <img
             className="h-full w-full"
             src={pillarData}
             alt="abstract image"
           />
         </figure>
-        <div className="flex flex-col gap-16 p-8">
+        <div className="flex w-fit flex-grow-0 flex-col gap-16 p-8">
           <h1 className="text-2xl">
             Lorem ipsum dolor sit amet consectetur adipisicing.
           </h1>
