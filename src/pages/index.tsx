@@ -1,3 +1,17 @@
+/* 
+# Home page 
+  100vh image indicating scroll
+  -
+  4 pillars, images are full heigh and cropped horizontally. Opacity 40%, by default first one is opacity 100%. On hover the hovered one is 100% opacity and the others are 40%
+  -
+  Persistent bottom nav with tabs equivalent to 4 pillars
+
+# Pillar page
+  100vh image, collapsible cards floating with info
+  -
+  Persistent bottom nav with tabs equivalent to 4 pillars
+*/
+
 import type { NextPage } from "next";
 import Head from "next/head";
 
