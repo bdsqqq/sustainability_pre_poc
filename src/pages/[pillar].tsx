@@ -82,6 +82,7 @@ import {
   PopoverHeading,
   usePopoverState,
 } from "ariakit/popover";
+import { RadioButton, RadioButtonChecked } from "@carbon/icons-react";
 const Hotspot = ({
   coords,
   content,
@@ -99,14 +100,14 @@ const Hotspot = ({
     <>
       <PopoverDisclosure
         state={popover}
-        className="absolute z-10 max-w-sm rounded-full bg-stone-800 px-4 py-2 text-stone-200"
+        className="absolute z-10 max-w-sm rounded-full bg-stone-800 p-2 text-stone-200"
         style={{ top: `${coords.y}%`, left: `${coords.x}%` }}
       >
-        O
+        {popover.open ? <RadioButton /> : <RadioButtonChecked />}
       </PopoverDisclosure>
       <Popover
         state={popover}
-        className="max-w-sm bg-stone-800 px-4 py-2 text-stone-200"
+        className="max-w-sm bg-stone-800 p-2 py-2 text-stone-200"
         style={{
           paddingTop: popover.currentPlacement.includes("bottom")
             ? "48px"
