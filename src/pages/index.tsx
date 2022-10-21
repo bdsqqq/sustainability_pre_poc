@@ -12,6 +12,7 @@
   Persistent bottom nav with tabs equivalent to 4 pillars
 */
 
+import { ArrowDown } from "@carbon/icons-react";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
@@ -37,7 +38,9 @@ const Home: NextPage = () => {
               similique.
             </h1>
             <a className="w-fit" href="#pillars">
-              Scroll down
+              <span className="flex items-center gap-2">
+                Scroll down <ArrowDown className="transform animate-bounce" />
+              </span>
             </a>
           </div>
         </section>
@@ -55,12 +58,9 @@ const ImagesSection = () => {
   const [cols, setCols] = useState(4);
 
   return (
-    <section id="pillars" className="flex max-h-screen flex-col gap-8 p-16">
+    <section id="pillars" className="flex max-h-screen flex-col p-24">
       <div className="relative">
-        <h2 className="w-1/3 text-5xl">
-          Lorem ipsum dolor sit amet consectetur.
-        </h2>
-        <div className="absolute -bottom-8 right-0 flex gap-2">
+        <div className="absolute bottom-0 right-0 flex gap-2">
           <button
             className="p-2 disabled:cursor-not-allowed disabled:opacity-30"
             disabled={cols === 4}
@@ -86,7 +86,7 @@ const ImagesSection = () => {
         </div>
       </div>
       <div
-        className="group grid h-[80vh] gap-4 overflow-hidden"
+        className="group pointer-events-none grid h-[100vh] gap-4"
         style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
       >
         {pillarImages
@@ -94,13 +94,14 @@ const ImagesSection = () => {
           .map((image, i) => (
             <Link href={`${i + 1}`} passHref key={image}>
               <a
-                className={`filter transition-all duration-300 hover:!opacity-100 hover:!grayscale-0 focus:!opacity-100 focus:!grayscale-0 group-focus-within:opacity-40 group-focus-within:grayscale group-hover:opacity-40 group-hover:grayscale ${
-                  i !== 0 && "opacity-40 grayscale"
+                className={`pointer-events-auto h-[85vh] w-full overflow-hidden rounded shadow-stone-900 filter transition-all duration-300 hover:scale-105 hover:!opacity-100 hover:!blur-0 hover:!drop-shadow-2xl hover:!saturate-100 focus:scale-105 focus:!opacity-100 focus:!blur-0 focus:drop-shadow-2xl focus:!saturate-100 group-focus-within:opacity-40 group-focus-within:blur-sm group-focus-within:drop-shadow-none group-focus-within:saturate-50 group-hover:opacity-40 group-hover:blur-sm group-hover:drop-shadow-none group-hover:saturate-50 ${
+                  i !== 0 &&
+                  "scale-100 opacity-40 blur-sm drop-shadow-none saturate-50"
                 }`}
               >
-                <figure className="h-full">
+                <figure className="h-full w-full">
                   <img
-                    className="h-full object-cover object-center"
+                    className="h-full w-full object-cover object-center"
                     src={image}
                     alt="abstract image"
                   />
