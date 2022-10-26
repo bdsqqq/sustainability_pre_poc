@@ -92,21 +92,22 @@ const ImagesSection = () => {
         {pillarImages
           .filter((_, i) => i < cols)
           .map((image, i) => (
-            <Link href={`${i + 1}`} passHref key={image}>
-              <a
-                className={`pointer-events-auto h-[85vh] w-full overflow-hidden rounded shadow-stone-900 filter transition-all duration-300 hover:scale-105 hover:!opacity-100 hover:!blur-0 hover:!drop-shadow-2xl hover:!saturate-100 focus:scale-105 focus:!opacity-100 focus:!blur-0 focus:drop-shadow-2xl focus:!saturate-100 group-focus-within:opacity-40 group-focus-within:blur-sm group-focus-within:drop-shadow-none group-focus-within:saturate-50 group-hover:opacity-40 group-hover:blur-sm group-hover:drop-shadow-none group-hover:saturate-50 ${
-                  i !== 0 &&
-                  "scale-100 opacity-40 blur-sm drop-shadow-none saturate-50"
-                }`}
-              >
-                <figure className="h-full w-full">
-                  <img
-                    className="h-full w-full object-cover object-center"
-                    src={image}
-                    alt="abstract image"
-                  />
-                </figure>
-              </a>
+            <Link
+              className={`pointer-events-auto h-[85vh] w-full overflow-hidden rounded shadow-stone-900 filter transition-all duration-300 hover:scale-105 hover:!opacity-100 hover:!blur-0 hover:!drop-shadow-2xl hover:!saturate-100 focus:scale-105 focus:!opacity-100 focus:!blur-0 focus:drop-shadow-2xl focus:!saturate-100 group-focus-within:opacity-40 group-focus-within:blur-sm group-focus-within:drop-shadow-none group-focus-within:saturate-50 group-hover:opacity-40 group-hover:blur-sm group-hover:drop-shadow-none group-hover:saturate-50 ${
+                i !== 0 &&
+                "scale-100 opacity-40 blur-sm drop-shadow-none saturate-50"
+              }`}
+              href={`${i + 1}`}
+              passHref
+              key={image}
+            >
+              <figure className="h-full w-full">
+                <img
+                  className="h-full w-full object-cover object-center"
+                  src={image}
+                  alt="abstract image"
+                />
+              </figure>
             </Link>
           ))}
       </div>
