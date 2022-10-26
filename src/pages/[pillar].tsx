@@ -80,16 +80,28 @@ const Pillar = ({
 export default Pillar;
 
 const Navigation = ({ className }: { className?: string }) => {
+  const { asPath } = useRouter();
+
   return (
     <ul
       className={`flex h-[48px] items-center gap-16  bg-stone-300 px-8 ${className}`}
     >
       <li>
-        <Link href={"/"}>Home</Link>
+        <Link
+          style={{ textDecoration: asPath == "/" ? "underline" : "none" }}
+          href={"/"}
+        >
+          Home
+        </Link>
       </li>
       {pillarImages.map((image, i) => (
         <li key={image}>
-          <Link href={`/${i + 1}`}>{`Pillar ${i + 1}`}</Link>
+          <Link
+            style={{
+              textDecoration: asPath == `/${i + 1}` ? "underline" : "none",
+            }}
+            href={`/${i + 1}`}
+          >{`Pillar ${i + 1}`}</Link>
         </li>
       ))}
     </ul>
@@ -105,6 +117,7 @@ import {
 } from "ariakit/popover";
 import { RadioButton, RadioButtonChecked } from "@carbon/icons-react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 const Hotspot = ({
   coords,
   content,
