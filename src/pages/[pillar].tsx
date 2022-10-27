@@ -28,7 +28,7 @@ const Pillar = ({
                 alt="abstract image"
               />
             </figure>
-            {pillar?.hotspots.map((hotspot, i) => (
+            {pillar?.hotspots.reverse().map((hotspot, i) => (
               <Hotspot
                 key={i}
                 content={recurse(hotspot.content)}
@@ -73,14 +73,20 @@ const Navigation = ({ className }: { className?: string }) => {
         </Link>
       </li>
       {pillars.map((pillar, i) => (
-        <li key={pillar.imgUrl}>
-          <Link
-            style={{
-              textDecoration: asPath == `/${i + 1}` ? "underline" : "none",
-            }}
-            href={`/${i + 1}`}
-          >{`Pillar ${i + 1}`}</Link>
-        </li>
+        <div key={pillar.imgUrl} className="flex items-center gap-2">
+          <li>
+            <Link
+              style={{
+                textDecoration: asPath == `/${i + 1}` ? "underline" : "none",
+              }}
+              href={`/${i + 1}`}
+            >{`Pillar ${i + 1}`}</Link>
+          </li>
+          {asPath == `/${i + 1}` &&
+            pillar.hotspots.map((hotspot) => (
+              <RadioButton key={`${hotspot.coords.x}_${hotspot.coords.y}`} />
+            ))}
+        </div>
       ))}
     </ul>
   );
@@ -104,8 +110,10 @@ const Hotspot = ({
   content: JSX.Element;
 }) => {
   const popover = usePopoverState({
+    animated: true,
     overlap: true,
-    gutter: -40,
+    shift: 16,
+    gutter: -16,
     placement: "bottom-end",
   });
 
@@ -113,20 +121,21 @@ const Hotspot = ({
     <>
       <PopoverDisclosure
         state={popover}
-        className="absolute max-w-sm rounded-full bg-stone-800 p-2 text-stone-200 aria-expanded:z-20"
+        className="absolute max-w-sm rounded-full bg-stone-800 p-2 text-stone-200 aria-expanded:z-10"
         style={{ top: `${coords.y}%`, left: `${coords.x}%` }}
       >
         {popover.open ? <RadioButton /> : <RadioButtonChecked />}
       </PopoverDisclosure>
       <Popover
         state={popover}
-        className="relative z-10 max-w-sm bg-stone-800 p-2 py-2 text-stone-200"
+        data-position={popover.currentPlacement}
+        className="relative max-h-[40vh] max-w-sm scale-0 transform overflow-auto bg-stone-800 p-2 py-2 text-stone-200 opacity-0 transition-all data-[position=bottom-end]:origin-top-right data-[position=bottom-start]:origin-top-left data-[position=top-end]:origin-bottom-right data-[position=top-start]:origin-bottom-left data-[enter]:scale-100 data-[enter]:opacity-100"
         style={{
           paddingTop: popover.currentPlacement.includes("bottom")
-            ? "48px"
+            ? "24px"
             : "1rem",
           paddingBottom: popover.currentPlacement.includes("top")
-            ? "48px"
+            ? "24px"
             : "1rem",
         }}
       >
@@ -149,7 +158,6 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 import superjson from "superjson";
 import React from "react";
-import ReactDOM from "react-dom";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const pillar = pillars.find(
