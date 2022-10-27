@@ -50,7 +50,7 @@ export const pillars = [
           </div>
         ),
         coords: {
-          x: 90,
+          x: 10,
           y: 40,
         },
       },
