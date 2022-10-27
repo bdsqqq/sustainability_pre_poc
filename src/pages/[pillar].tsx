@@ -3,13 +3,20 @@ import type {
   GetStaticPaths,
   GetStaticPropsContext,
 } from "next";
-import { pillarImages } from "./";
+import { pillars } from "./";
 
 const Pillar = ({
   pillarData,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const pillar = superjson.parse<typeof pillars[number]>(pillarData);
+
+  const recurse = (element: JSX.Element) =>
+    Array.isArray(element.props.children)
+      ? element.props.children.map((child: JSX.Element) => recurse(child))
+      : React.cloneElement(element);
+
   return (
-    <div key={pillarData} className="grid [grid-template-rows:auto_48px]">
+    <div key={pillar?.imgUrl} className="grid [grid-template-rows:auto_48px]">
       <Navigation className="row-start-2" />
       <main className="h-[calc(100vh-48px)] overflow-scroll">
         <div className="flex min-h-[calc(100vh-48px)]">
@@ -17,46 +24,17 @@ const Pillar = ({
             <figure className="h-full w-full">
               <img
                 className="h-full w-full"
-                src={pillarData}
+                src={pillar?.imgUrl}
                 alt="abstract image"
               />
             </figure>
-            <Hotspot
-              content={
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Praesentium ab voluptates nostrum excepturi odio consequatur
-                  similique, unde sunt architecto ipsa odit ex quia corporis
-                  itaque blanditiis commodi mollitia, aperiam quibusdam.
-                </p>
-              }
-              coords={{ x: 10, y: 10 }}
-            />
-            <Hotspot
-              content={
-                <figure>
-                  <img
-                    className="h-full w-full"
-                    src={
-                      "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80"
-                    }
-                    alt="abstract image"
-                  />
-                </figure>
-              }
-              coords={{ x: 30, y: 50 }}
-            />
-            <Hotspot
-              content={
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Praesentium ab voluptates nostrum excepturi odio consequatur
-                  similique, unde sunt architecto ipsa odit ex quia corporis
-                  itaque blanditiis commodi mollitia, aperiam quibusdam.
-                </p>
-              }
-              coords={{ x: 90, y: 90 }}
-            />
+            {pillar?.hotspots.map((hotspot, i) => (
+              <Hotspot
+                key={i}
+                content={recurse(hotspot.content)}
+                coords={hotspot.coords}
+              />
+            ))}
           </div>
           <div className="flex w-fit flex-grow-0 flex-col gap-16 p-8">
             <h1 className="text-2xl">
@@ -94,8 +72,8 @@ const Navigation = ({ className }: { className?: string }) => {
           Home
         </Link>
       </li>
-      {pillarImages.map((image, i) => (
-        <li key={image}>
+      {pillars.map((pillar, i) => (
+        <li key={pillar.imgUrl}>
           <Link
             style={{
               textDecoration: asPath == `/${i + 1}` ? "underline" : "none",
@@ -135,14 +113,14 @@ const Hotspot = ({
     <>
       <PopoverDisclosure
         state={popover}
-        className="absolute z-10 max-w-sm rounded-full bg-stone-800 p-2 text-stone-200"
+        className="absolute max-w-sm rounded-full bg-stone-800 p-2 text-stone-200 aria-expanded:z-20"
         style={{ top: `${coords.y}%`, left: `${coords.x}%` }}
       >
         {popover.open ? <RadioButton /> : <RadioButtonChecked />}
       </PopoverDisclosure>
       <Popover
         state={popover}
-        className="max-w-sm bg-stone-800 p-2 py-2 text-stone-200"
+        className="relative z-10 max-w-sm bg-stone-800 p-2 py-2 text-stone-200"
         style={{
           paddingTop: popover.currentPlacement.includes("bottom")
             ? "48px"
@@ -164,13 +142,17 @@ const Hotspot = ({
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {
-    paths: pillarImages.map((_, i) => ({ params: { pillar: `${i + 1}` } })),
+    paths: pillars.map((_, i) => ({ params: { pillar: `${i + 1}` } })),
     fallback: false, // can also be true or 'blocking'
   };
 };
 
+import superjson from "superjson";
+import React from "react";
+import ReactDOM from "react-dom";
+
 export const getStaticProps = async (context: GetStaticPropsContext) => {
-  const pillar = pillarImages.find(
+  const pillar = pillars.find(
     (_, i) => (i + 1).toString() == context.params?.pillar
   );
   if (!pillar) {
@@ -179,6 +161,6 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 
   return {
     // Passed to the page component as props
-    props: { pillarData: pillar },
+    props: { pillarData: superjson.stringify(pillar) },
   };
 };
